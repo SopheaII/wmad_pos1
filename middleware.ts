@@ -22,6 +22,7 @@ export default async function middleware(req: NextRequest) {
   const cookie = cookies().get("session");
 
   console.log("path:", path);
+  console.log("cookie:", cookie);
 
   if (isApiRoute) {
     if (!isPublicRoute) {
@@ -70,7 +71,9 @@ export default async function middleware(req: NextRequest) {
   }
 
   if (!isApiRoute) {
+    console.log("-------- 1")
     const session = await decrypt(cookie?.value);
+    console.log("-------- 2")
 
     if (isProtectedRoute && !session?.userId) {
       return NextResponse.redirect(new URL("/login", req.nextUrl));
